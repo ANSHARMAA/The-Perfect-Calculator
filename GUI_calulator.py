@@ -1,11 +1,15 @@
 import tkinter as tk
 
-root = tk.Tk()
-root.title("Calculator:- ")
-root.geometry("340x475")
-root.configure(bg="light blue")
 
-def calculate():
+def click_key(event):
+    key_typed = event.char
+    key_name = event.keysym
+    print(f"You Entered :- {key_typed} | Key Name:- {key_name}")
+
+def click(value):
+     display_board.insert(tk.END , value)
+
+def calculate(event):
     try:
         result = eval(display_board.get())
         display_board.delete(0 , tk.END)
@@ -26,24 +30,35 @@ def calculate():
         display_board.delete(0, tk.END)
         display_board.insert(0, "Syntax Error")
     
-
-def click(value):
-
-    display_board.insert(tk.END , value)
-
-def clear_display():
+def clear_display(event):
     display_board.delete(0 , tk.END)
 
-def backspace():
+def backspace(event):
     current = display_board.get()
     display_board.delete(0 , tk.END)
     display_board.insert(0 ,current[:-1])
+
+def click_esc(event):
+    root.destroy()
+
+
+root = tk.Tk()
+root.title("Calculator:- ")
+root.geometry("340x475")
+root.configure(bg="light blue")
+root.bind("<Key>" , click_key )    # checked 
+root.bind("<Escape>" , click_esc)  # checked
+root.bind("<Delete>" , clear_display) # checked
+root.bind("<BackSpace>" , backspace) # checked
+root.bind("<Return>" , calculate)   # checked
+
 
 greet = tk.Label(root , text="Hello User!" , fg="black")
 greet.grid(pady=10 , padx=10 )
 
 display_board = tk.Entry(root , font=("Arial" , 20) , justify="right")
 display_board.grid(row=2, column=0 , columnspan=4, padx=5 , pady=5)
+display_board.focus_set()
 
 
  
